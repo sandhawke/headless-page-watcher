@@ -1,0 +1,32 @@
+{
+  "name": "headless-page-watcher",
+  "version": "0.0.0",
+  "description": "Monitor a live web page for changes using a headless browser",
+  "main": "index.js",
+  "scripts": {
+    "test": "npx standard && npx tap --cov test*.js test/*.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/sandhawke/headless-page-watcher.git"
+  },
+  "keywords": [
+    "sandhawke"
+  ],
+  "author": "Sandro Hawke (http://hawke.org/sandro)",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/sandhawke/headless-page-watcher/issues"
+  },
+  "homepage": "https://github.com/sandhawke/headless-page-watcher#readme",
+  "devDependencies": {
+    "tape": "^4.9.1"
+  },
+  "dependencies": {
+    "better-opn": "^0.1.4",
+    "debug": "^4.1.0",
+    "eventemitter3": "^3.1.2",
+    "p-memoize": "^3.1.0",
+    "puppeteer": "^1.17.0"
+  }
+}
