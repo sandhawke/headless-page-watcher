@@ -1,10 +1,15 @@
 const {watcher} = require('.')
 const opn = require('better-opn');
 
+const sel = 'div[guidedhelpid=docs_editing_area]'
+
 function f (url) {
-  const w1 = watcher(url)
-  w1.on('change', () => { console.log('change', url) })
+  const w1 = watcher(url, sel)
   w1.on('running', () => { console.log('running', url) })
+  w1.on('change', () => { console.log('\nchange', url) })
+
+  w1.on('change', async () => {
+    console.log('\nchange', 'text: ' + JSON.stringify(await w1.text())) })
   opn(url)
 }
 

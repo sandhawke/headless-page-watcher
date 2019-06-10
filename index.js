@@ -11,7 +11,7 @@ async function startBrowser () {
   return await puppeteer.launch()
 }
 
-function watcher (url) {
+function watcher (url, selector = 'body') {
   const w = new EventEmitter()
   start().then(() => {
     w.emit('running')
@@ -33,14 +33,19 @@ function watcher (url) {
     // pass along events?
     // https://github.com/GoogleChrome/puppeteer/blob/master/docs/api.md#class-page
 
+    await page.evaluate('window.hpwSelector = ' + JSON.stringify(selector))
+    
     await page.evaluate(() => {
       window.oldval = ''
       window.textRep = () => {
+        // we make a text representation which is innerText + all the links
+        // because we can are link URLs changing
         const arr = []
         const as = document.querySelectorAll('div a')
         for (let aa of as) arr.push(aa.getAttribute('href') + ' ' + aa.innerText)
-        // arr.push(document.innerText)
-        arr.push(document.querySelector('div[guidedhelpid=docs_editing_area]').innerText)
+        // arr.push(document.body.innerText)
+        // doc specific, fragile
+        arr.push(document.querySelector(window.hpwSelector).innerText)
         const t = arr.join('\n')
         // const t = JSON.stringify(arr)
         return t
@@ -61,6 +66,15 @@ function watcher (url) {
       if (w.running) g()
     }
     g()
+
+    w.text = async () => {
+      return await page.evaluate(() => {
+        return window.oldval
+      })
+    }
+
+    // in case you want to call w.page.evaluate yourself
+    w.page = page
   }
 }
 
